@@ -12,55 +12,70 @@ Work-Summery
 from bs4 import BeautifulSoup
 import os
 import urllib
-import utf8_decoder as decoder
+import utf8_decoder as link_decoder
 import webbrowser
 import get_heb_url as heb_extractor
 import page_builder as builder
+import urllib.request
 
 
 
 
 
 
-def start_scrap(sitemap_url):
-    file = urllib.request.urlopen(url)
+def start_scrap(sitemap_url,base_url):
+    file = urllib.request.urlopen(sitemap_url)
 
 
 
-    #Run on sitemap and isolate all the the Links
+    #Run on sitemap and isolate all the the relevent Links
     for line in file:
         decoded_line = line.decode("utf-8")
         # * ! if there is a <loc> tag in the line extracting data function will be activated.
         if decoded_line.find('loc') != -1:
             
-            #This is the Raw line from the website map: <loc>http://www.ask-tal.co.il/calc/חישוב-החזר-חודשי</loc>
-            #print(decoded_line)
-            
-            """ decode function expalined ---> decoder.Decode_UTF8_URL()
-            #Call the decoder function - get the url that python can handle
-            #input: <loc>http://www.ask-tal.co.il/המשכנתא</loc>/
-            #output: "http://www.ask-tal.co.il/%D7%A7%D7%A0%D7%99%D7%99%D7%AA-%D7%93%D7%99%D7%A8%D7%94
-
-            # This Url can be open by browser in order to extract data from the page in next
-            
-            #Decoder function take the xml hebrew line clean it and decode it so it be usable for handling.
             """
-            browser_url = decoder.Decode_UTF8_URL(decoded_line)
-            print(browser_url)
+            ---First Test---
+            <loc> extraction test.
+            This print test will show onlu th <loc> 
+            is the Raw line from the website map: <loc>http://www.ask-tal.co.il/calc/חישוב-החזר-חודשי</loc>
+            output: only the <loc> line from the sitemap
+            print(decoded_line)
+            """
+            
+            """ 
+            ---Decode function expalined ---> decoder.Decode_UTF8_URL()---
+
+            Decoder function take the xml hebrew line clean it and decode it so it be usable for handling.
+            Call the decoder function - extract  the url that python can handle
+            input: <loc>http://www.ask-tal.co.il/המשכנתא</loc>/
+            output: "http://www.ask-tal.co.il/%D7%A7%D7%A0%D7%99%D7%99%D7%AA-%D7%93%D7%99%D7%A8%D7%94
+
+            browser_url: a Url can be open by browser in order to extract data from the page in next
+
+            """
+           
+            browser_url = link_decoder.Decode_UTF8_URL(decoded_line,base_url)
+            #print(browser_url)
             
 
             """
-            #extract the Hebrew Url so a file with this name can be created.
-            heb_url = heb_extractor.Extract_Hebrew_Url(decoded_line)
+            ---Function Info: extract the Hebrew Url so a file with this name can be created---
+            input: <loc>http://www.ask-tal.co.il/המשכנתא</loc>/
+            output: משכנתא.html      
+            """
+
+            heb_url = heb_extractor.Extract_Hebrew_Url(decoded_line,base_url)
             #print(heb_url)
         
-        """
-            #This is the page builder function that should get two argument the heb string which will be
-            #the html name and the url from it the data will be extracted.
-            #Page_builder_funcrtion(heb_url,browser_url)
             
-            #This is a temppry function just to create the files in the folders
-            #builder.Page_Builder(heb_url,browser_url)
+            """
+            ---This function in this version should take all the content of the file and insert him to a html file so it will be ready to deploy---
+            This is the page builder function that  get two argument the heb string  url  which will be scrap.
+            and the hebrew name of the file that the content will be insert into.
+            """
+            
+            builder.Page_Builder(heb_url,browser_url)
 
             """
 
@@ -80,6 +95,15 @@ def start_scrap(sitemap_url):
     """
 
 
+
+"""
+
+App instrauction - there are two parampters that should be change the URL that will be scan and the Base-Url
+
+
+"""
+
+
 if __name__ == '__main__':
 
    
@@ -94,12 +118,14 @@ if __name__ == '__main__':
 
     #Open SiteMap URL File Ask-Tal
     #url = "http://www.ask-tal.co.il/map.asp"
+    #base_url = "http://www.ask-tal.co.il/"
 
 
     #Open SiteMap URL File Nadlan Deal Group
-    url = "http://www.nadlandeal.co.il/map.asp"
+    sitemap_url = "http://www.nadlandeal.co.il/map.asp"
+    base_url = "http://www.nadlandeal.co.il/"
 
-    start_scrap(url)
+    start_scrap(sitemap_url,base_url )
 
     print("Main Emd its Running.")
 

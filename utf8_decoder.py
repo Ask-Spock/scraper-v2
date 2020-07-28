@@ -16,6 +16,8 @@ Output: "http://www.ask-tal.co.il/%D7%A7%D7%A0%D7%99%D7%99%D7%AA-%D7%93%D7%99%D7
 
 2.It add some wierd chars at end of lines "%N" maybe because of the cating str()
   anyway it should be recostracted better
+
+3.There should not be base URL Hard coded just a url that will be pass as a parameter.
 """
 
 
@@ -23,10 +25,10 @@ import webbrowser
 
 
 
-def Decode_UTF8_URL(Web_Heb_Url):
+def Decode_UTF8_URL(Web_Heb_Url,base_Url):
 
 
-    base_Url = "http://www.ask-tal.co.il/"
+    #base_Url = "http://www.ask-tal.co.il/"
 
 
     #Remove <loc> from the string
@@ -42,7 +44,7 @@ def Decode_UTF8_URL(Web_Heb_Url):
 
 
     #Cutting the Base Url to get only the Hebrew Part
-    tempHebUrl = Web_Heb_Url.replace('http://www.ask-tal.co.il/','')
+    tempHebUrl = Web_Heb_Url.replace(base_Url,'')
 
 
     #print("This is the Hebrew format from the url that should be convert: \n\n" + tempHebUrl)
@@ -90,7 +92,21 @@ def Decode_UTF8_URL(Web_Heb_Url):
 
     return return_url
 
+
+
+
+
+if __name__ == '__main__':
+
+   
+    print("utf8_decoder Start Running:")
+
+
+
 """
+
+---trying to slove the triming problem----
+
 example_url = "<loc>http://www.ask-tal.co.il/קניית-דירה-התהליך-המשפטי</loc>"
 
 trimmed_url = Decode_UTF8_URL(example_url)
@@ -99,4 +115,3 @@ print(trimmed_url)
 
 webbrowser.open(trimmed_url, new=2)
 """
-
