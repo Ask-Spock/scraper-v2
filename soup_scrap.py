@@ -37,18 +37,21 @@ def scrap_page(sample_url):
 
     soup = BeautifulSoup(page.text, 'html.parser')
 
-    #print(soup.prettify())
     print("--------script running----------------\n")
+
+
+    print(soup.prettify())
+
    # print(soup.title)
     #print(soup.h1)
 
-    keywords = soup.findAll("meta",  property="keywords")
+    #keywords = soup.findAll("meta",  property="keywords")
     #keywords =  soup.find(name="keywords")
     #title = soup.find("meta",  property="og:title")
 
 
 
-    print(keywords)
+    #print(keywords)
 
 
 

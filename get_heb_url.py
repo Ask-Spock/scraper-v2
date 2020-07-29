@@ -31,7 +31,16 @@ def Extract_Hebrew_Url(Web_Heb_Url,base_Url):
     #Cutting the Base Url to get only the Hebrew Part
     final_Link = Web_Heb_Url.replace(base_Url,'')
 
-    
+    #remove end of line of the str
+    final_Link = final_Link.rstrip()
+
+    #Remove the new line char %B
+    #Heb_Url = Heb_Url[:-1]
+
+    #concatnating the html ending
+    final_Link = final_Link + ".html"
+
+    return final_Link
     
     """
 
@@ -49,6 +58,12 @@ def Extract_Hebrew_Url(Web_Heb_Url,base_Url):
     #final_Link = str(heb_url)
     """
 
+
+
+    """
+    
+     ---------In this code section the app return the .html conctanted----
+
     #Remove the new line char %B
     final_Link = final_Link[:-1]
 
@@ -57,7 +72,7 @@ def Extract_Hebrew_Url(Web_Heb_Url,base_Url):
     if (final_Link.find('/')==-1 ):
         return (final_Link + ".html")
     
-
+    """
      
 
 

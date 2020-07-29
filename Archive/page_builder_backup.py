@@ -36,14 +36,12 @@ import webbrowser
 import os
 import sys
 from bs4 import BeautifulSoup
-import requests
-
 
 
 
 """
 Input:
-The function get 3 parmaters.
+The function get 2 parmaters.
 1.The Hebrew name of the file.
 2.The URL of the file that is should scrap.
 3.The Folder name all the file shoud be insert.
@@ -54,18 +52,34 @@ The function will create a file and all the conotnent it has and insert it to a 
 
 """
 
-def Page_Builder(Heb_Url,File_Url,folderName):
+def Page_Builder(Heb_Url,Soup_Url,folderName):
 
-    
+    #Create  file name from the URL
+    #print("This is the Hebrew name of the writing file: " + Heb_Url)
 
-    #Remove the files inside the 'calc/' folder.
+    """
+
+    There are problems with the hebrew name it should be trim
+    before adding it to the ".html"
+
+
+    """
+
+    ####Remove the 'calc/'
 
     if Heb_Url.find('calc/') != -1:
         Heb_Url = Heb_Url.replace('calc/', "")
 
 
 
-    
+    #remove end of line of the str
+    Heb_Url = Heb_Url.rstrip()
+
+    #Remove the new line char %B
+    #Heb_Url = Heb_Url[:-1]
+
+    #concatnating the html ending
+    Heb_Url = Heb_Url + ".html"
 
 
     """
@@ -81,7 +95,7 @@ def Page_Builder(Heb_Url,File_Url,folderName):
 
 
     
-    
+    #f = open(Heb_Url, "w")
 
     """
     checking if the path changed
@@ -98,25 +112,15 @@ def Page_Builder(Heb_Url,File_Url,folderName):
     4.page content.
     
     """
-    #create a file
-    page_file = open(Heb_Url, "w")
 
-
-    #Scrap content
-
-    content = requests.get(File_Url)
-
-    
-
-
-
-    soup = BeautifulSoup(content.text, 'html.parser')
+    #Scrap Title
+    #soup = BeautifulSoup(response.body, 'html.parser')
     #print(Soup_Url)
  
-    page_file.write(soup.prettify())
+
 
     #close the file after the data has been writen
-    page_file.close()
+    #f.close()
     
     #print("----------")
 

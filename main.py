@@ -1,6 +1,13 @@
 """
 ---------------------------------------------
 
+Prerquests:
+
+set the following:
+sitemap_url = "http://www.nadlandeal.co.il/map.asp"
+base_url = "http://www.nadlandeal.co.il/"
+folderName ="NadlanDeal"
+
 Work-Summery
 
 1.get website maplink
@@ -17,13 +24,57 @@ import webbrowser
 import get_heb_url as heb_extractor
 import page_builder as builder
 import urllib.request
+import shutil
 
+
+
+
+#moudlue costractor that callrd every time the module import
+#creating a new working folder
+def Moudle_init(folderName):
+    
+    print(" Builder Moudle is Activated \n")
+    #The script need a new working folder every time its run so i delete the previes
+    #and create a new one.
+    deleteFolder()
+    createFolder()
+
+
+
+    #Change path to  the new dirctory
+    os.chdir('./' + folderName)
+    path = os.getcwd()
+    print("The new path is: " + path)
+
+
+
+
+#Create a folder for the website files
+def createFolder():
+    try:
+        # Create target Directory
+        os.mkdir(folderName)
+        print("Directory " , folderName ,  " Created ")
+    except FileExistsError:
+        print("Directory " , folderName ,  " already exists")
+
+
+
+#Delete a folder for the website files
+def deleteFolder():
+    # Try to remove tree; if failed show an error using try...except on screen
+    try:
+        shutil.rmtree(folderName)
+    except OSError as e:
+        print ("Error: %s - %s." % (e.filename, e.strerror))
 
 
 
 
 
 def start_scrap(sitemap_url,base_url):
+
+
     file = urllib.request.urlopen(sitemap_url)
 
 
@@ -75,7 +126,7 @@ def start_scrap(sitemap_url,base_url):
             and the hebrew name of the file that the content will be insert into.
             """
             
-            builder.Page_Builder(heb_url,browser_url)
+            builder.Page_Builder(heb_url,browser_url,folderName)
 
             """
 
@@ -110,24 +161,29 @@ if __name__ == '__main__':
     print("Main Start Running:")
 
     """
-    open the XML map of a website and  get the releven lines and encode the to handle url and
-    enter the url to a Data structuer
+    1.Run on All sitemap.
+    2.get info from each file.
+    3.build html file and enter it to a relevent folder.
 
     """
 
 
-    #Open SiteMap URL File Ask-Tal
-    #url = "http://www.ask-tal.co.il/map.asp"
-    #base_url = "http://www.ask-tal.co.il/"
 
 
     #Open SiteMap URL File Nadlan Deal Group
     sitemap_url = "http://www.nadlandeal.co.il/map.asp"
+
+    #The Base URL that will be Scan
     base_url = "http://www.nadlandeal.co.il/"
+
+    #The Folder name all the file will be build into
+    folderName = "NadlanDeal"
+
+    Moudle_init(folderName)
 
     start_scrap(sitemap_url,base_url )
 
-    print("Main Emd its Running.")
+    print("Main End its Running.")
 
     
 
